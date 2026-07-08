@@ -1,224 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django Mail Demo</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            transition: all 0.2s ease-in-out;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0b0f19;
-            background-image: 
-                linear-gradient(rgba(30, 41, 59, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(30, 41, 59, 0.3) 1px, transparent 1px);
-            background-size: 40px 40px;
-            color: #f8fafc;
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .dashboard-header {
-            text-align: center;
-            margin-bottom: 32px;
-            max-width: 500px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(16, 185, 129, 0.1);
-            color: #10b981;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            margin-bottom: 16px;
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background-color: #10b981;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 8px #10b981;
-        }
-
-        h1 {
-            font-size: 2.25rem;
-            font-weight: 800;
-            margin: 0 0 8px 0;
-            letter-spacing: -0.5px;
-            color: #ffffff;
-        }
-
-        .subtitle {
-            color: #94a3b8;
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        form {
-            background: #111827;
-            border: 1px solid #1f2937;
-            padding: 40px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-
-        .form-group {
-            margin-bottom: 24px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #94a3b8;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 14px 16px;
-            background: #1f2937;
-            border: 1px solid #374151;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            color: #ffffff;
-            outline: none;
-            font-family: inherit;
-        }
-
-        input[type="text"]::placeholder,
-        textarea::placeholder {
-            color: #4b5563;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-            background: #111827;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .btn-container {
-            position: relative;
-            margin-top: 32px;
-        }
-
-        input[type="submit"] {
-            width: 100%;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-        }
-
-        input[type="submit"]:hover {
-            background: #2563eb;
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
-        }
-
-        .loading input[type="submit"] {
-            color: transparent;
-            pointer-events: none;
-            background: #1d4ed8;
-        }
-
-        .spinner {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 22px;
-            height: 22px;
-            border: 2.5px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            border-top-color: #ffffff;
-            animation: spin 0.8s linear infinite;
-        }
-
-        .loading .spinner {
-            display: block;
-        }
-
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-    </style>
+    <title>Django Mail Sender</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+<body class="bg-cover bg-center bg-no-repeat min-h-screen font-sans flex items-center justify-center p-4 md:p-6 relative" 
+      style="background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop');">
 
-<body>
+    <!-- Soft, Bright Overlay tinting the nature image to keep it clean and premium -->
+    <div class="absolute inset-0 bg-white/40 backdrop-blur-xs z-0"></div>
 
-    <div class="dashboard-header">
-    <div class="status-badge">Gmail SMTP Service Online</div>
-    <h1>Django Mail </h1>
-</div>
-
-    
-    <form id="dispatchForm" action="{% url 'send_mail' %}" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="name">Recipient Name</label>
-            <input id="name" name="name" type="text" placeholder="Enter your name" required>
-        </div>
-
-        <div class="form-group">
-            <label for="sbj">Subject Line</label>
-            <input id="sbj" name="subject" type="text" placeholder="Enter email intent" required>
-        </div>
-
-        <div class="form-group">
-            <label for="msg">Message Body</label>
-            
-            <textarea id="msg" name="message" placeholder="Type your core content here..." required></textarea>
-        </div>
-
-        <div class="btn-container" id="submitWrapper">
-            <input type="submit" value="Send Mail">
-            <div class="spinner"></div>
-        </div>
-    </form>
-
-    <script>
+    <!-- Centered Single-Column Form Wrapper Container -->
+    <div class="max-w-xl w-full relative z-10 bg-sky-50/70 border border-sky-100/50 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-2xl">
         
-        document.getElementById('dispatchForm').addEventListener('submit', function() {
-            document.getElementById('submitWrapper').classList.add('loading');
+        <!-- Header Section -->
+        <div class="flex items-center gap-3 mb-6 border-b border-sky-100 pb-4">
+            <div class="w-10 h-10 rounded-xl bg-white border border-sky-200 text-sky-600 flex items-center justify-center shadow-xs">
+                <i class="fa-regular fa-paper-plane text-base"></i>
+            </div>
+            <div>
+                <h2 class="text-base font-extrabold tracking-wide text-slate-800 uppercase">Django Mail Sender</h2>
+                <p class="text-[11px] text-sky-700 font-semibold tracking-wider">MVT Communication Core</p>
+            </div>
+        </div>
+
+        <!-- Django Messages Success/Error Alert Popups -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-3 mb-4 rounded-xl text-xs font-bold {% if 'success' in message.tags %}bg-emerald-50 border-emerald-200 text-emerald-700{% else %}bg-rose-50 border-rose-200 text-rose-700{% endif %} border shadow-xs">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Main Interactive Mail Form -->
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            
+            <!-- Input 1: Sender Name Sign-off -->
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Sender Identifier</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-xs"><i class="fa-regular fa-user"></i></span>
+                    <input type="text" name="name" required placeholder="e.g. Lead Administrator" class="w-full bg-white/80 border border-sky-200/60 rounded-xl py-2.5 pl-9 pr-3 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white shadow-xs transition-all">
+                </div>
+            </div>
+
+            <!-- Input 2: Destination Email List -->
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Recipient Address Matrix</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-xs"><i class="fa-regular fa-envelope"></i></span>
+                    <input type="text" name="recipients" required placeholder="admin@domain.com, client@node.io" class="w-full bg-white/80 border border-sky-200/60 rounded-xl py-2.5 pl-9 pr-3 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white shadow-xs transition-all">
+                </div>
+                <p class="text-[9px] text-sky-700 font-medium mt-1">Separate multiple email addresses using commas</p>
+            </div>
+
+            <!-- Input 3: Email Message Subject Line -->
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Subject Heading</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 text-xs"><i class="fa-regular fa-bookmark"></i></span>
+                    <input type="text" name="subject" required placeholder="Enter transmission subject" class="w-full bg-white/80 border border-sky-200/60 rounded-xl py-2.5 pl-9 pr-3 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white shadow-xs transition-all">
+                </div>
+            </div>
+
+            <!-- Input 4: Comprehensive Text Body -->
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Message Content String</label>
+                <textarea name="message" rows="5" required placeholder="Compose text data block stream..." class="w-full bg-white/80 border border-sky-200/60 rounded-xl p-3.5 text-xs text-slate-700 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:bg-white shadow-xs transition-all resize-none"></textarea>
+            </div>
+
+            <!-- Input 5: Optional File Attachment Node -->
+            <div class="bg-white/60 border border-sky-200/40 p-2.5 rounded-xl flex items-center justify-between shadow-xs">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Attachment File</span>
+                    <span class="text-[9px] text-sky-700 font-medium">Optional file byte payload</span>
+                </div>
+                <label class="bg-white border border-sky-200 hover:border-sky-300 text-sky-700 text-xs px-3 py-1.5 rounded-lg font-bold cursor-pointer shadow-xs transition-colors">
+                    <i class="fa-solid fa-paperclip mr-1"></i> Attach
+                    <input type="file" id="form-file" name="attachment" class="hidden">
+                </label>
+            </div>
+
+            <!-- Unique Neon Mint Action Trigger Button -->
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-widest py-3.5 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] mt-2">
+                <i class="fa-solid fa-paper-plane text-[10px]"></i> Send Email
+            </button>
+        </form>
+
+        <!-- Bottom Brand Stamp -->
+        <div class="mt-6 pt-3 border-t border-sky-100 flex items-center justify-between text-xs text-sky-800/60 font-medium">
+            <span>Django Mail System Integration</span>
+            <i class="fa-brands fa-python text-base text-sky-600/40"></i>
+        </div>
+    </div>
+
+    <!-- File Attachment Success Feedback Script -->
+    <script>
+        const formFile = document.getElementById('form-file');
+        formFile.addEventListener('change', (e) => {
+            const labelNode = formFile.parentElement;
+            if(e.target.files.length > 0) {
+                labelNode.innerHTML = `<i class="fa-solid fa-check text-emerald-600 mr-1"></i> Attached`;
+                labelNode.classList.add('border-emerald-300', 'text-emerald-700');
+            }
         });
     </script>
 </body>
 </html>
-   
